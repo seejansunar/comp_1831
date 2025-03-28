@@ -69,8 +69,3 @@ CREATE (s)-[:WORKED_WITH]->(t);
 // to see relations
 
 MATCH (n) RETURN n; 
-
-
-// Viewing
-
-MATCH (n)-[r]->(m) RETURN n, r, m;
