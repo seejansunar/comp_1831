@@ -1,48 +1,76 @@
-// Create University Node
-CREATE (uni:University {name: "University of Greenwich"});
+// Create Nodes for University
 
-// Create Module Nodes
-CREATE 
-(comp1831:Module {name: "Comp1831"}),
-(comp1830:Module {name: "Comp1830"});
+CREATE (:University {name: "University of Greenwich"});
+CREATE (:Course {name: "COMP1830"});
+CREATE (:Course {name: "COMP1831"});
 
-// Create Technology Nodes
-CREATE 
-(ml:Technology {name: "ML"}),
-(neo4j:Technology {name: "Neo4J"}),
-(python:Technology {name: "Python"});
 
-// Create Student Nodes
-CREATE 
-(julia:Student {name: "Julia"}),
-(olivia:Student {name: "Olivia"}),
-(peter:Student {name: "Peter"}),
-(george:Student {name: "George"}),
-(katie:Student {name: "Katie"}),
-(rasvan:Student {name: "Rasvan"}),
-(rajesh:Student {name: "Rajesh"});
+// Create nodes for students
 
-// Create relationships for University
-MATCH (u:Student), (uni:University)
-CREATE (u)-[:STUDIES_IN]->(uni);
+CREATE (:Student {name: "Rasvan"});
+CREATE (:Student {name: "Olivia"});
+CREATE (:Student {name: "George"});
+CREATE (:Student {name: "Peter"});
+CREATE (:Student {name: "Rajesh"});
+CREATE (:Student {name: "Katie"});
+CREATE (:Student {name: "Julia"});
 
-// Create relationships for Modules
-CREATE 
-(julia)-[:ATTENDS]->(comp1831),
-(olivia)-[:ATTENDS]->(comp1831),
-(peter)-[:ATTENDS]->(comp1831),
-(george)-[:ATTENDS]->(comp1831),
-(katie)-[:ATTENDS]->(comp1830),
-(rasvan)-[:ATTENDS]->(comp1830),
-(rajesh)-[:ATTENDS]->(comp1830),
-(george)-[:ATTENDS]->(comp1830);
+// Create nodes for tech
 
-// Create relationships for Technologies
-CREATE 
-(george)-[:WORKED_WITH]->(neo4j),
-(george)-[:WORKED_WITH]->(python),
-(peter)-[:WORKED_WITH]->(ml),
-(rajesh)-[:WORKED_WITH]->(python);
+CREATE (:Technology {name: "Neo4J"});
+CREATE (:Technology {name: "Python"});
+CREATE (:Technology {name: "ML"});
 
-// Verify graph creation
-MATCH (n) RETURN n;
+
+// Relationship Course Attendance
+
+MATCH (s:Student {name: "Julia"}), (c:Course {name: "COMP1831"})
+CREATE (s)-[:ATTENDS]->(c);
+
+MATCH (s:Student {name: "Olivia"}), (c:Course {name: "COMP1831"})
+CREATE (s)-[:ATTENDS]->(c);
+
+MATCH (s:Student {name: "Peter"}), (c:Course {name: "COMP1831"})
+CREATE (s)-[:ATTENDS]->(c);
+
+MATCH (s:Student {name: "George"}), (c:Course {name: "COMP1831"})
+CREATE (s)-[:ATTENDS]->(c);
+
+MATCH (s:Student {name: "Katie"}), (c:Course {name: "COMP1830"})
+CREATE (s)-[:ATTENDS]->(c);
+
+MATCH (s:Student {name: "Rasvan"}), (c:Course {name: "COMP1830"})
+CREATE (s)-[:ATTENDS]->(c);
+
+MATCH (s:Student {name: "Rajesh"}), (c:Course {name: "COMP1830"})
+CREATE (s)-[:ATTENDS]->(c);
+
+// Relationship University enroll
+
+MATCH (s:Student), (u:University {name: "University of Greenwich"})
+CREATE (s)-[:STUDIES_IN]->(u);
+
+
+ 
+// Relationship for working with tech
+
+MATCH (s:Student {name: "Peter"}), (t:Technology {name: "ML"})
+CREATE (s)-[:WORKED_WITH]->(t);
+
+MATCH (s:Student {name: "George"}), (t:Technology {name: "Python"})
+CREATE (s)-[:WORKED_WITH]->(t);
+
+MATCH (s:Student {name: "George"}), (t:Technology {name: "Neo4J"})
+CREATE (s)-[:WORKED_WITH]->(t);
+
+MATCH (s:Student {name: "Rajesh"}), (t:Technology {name: "Python"})
+CREATE (s)-[:WORKED_WITH]->(t);
+
+// to see relations
+
+MATCH (n) RETURN n; 
+
+
+// Viewing
+
+MATCH (n)-[r]->(m) RETURN n, r, m;
