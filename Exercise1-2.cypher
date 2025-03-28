@@ -1,4 +1,8 @@
-MATCH (u:User)-[:ATTENDS]->(:Module{name:"Comp1831"})
-MATCH (u)-[:WORKED_WITH]->(:Technology {name: 'Python'})
-MATCH (u)-[:WORKED_WITH]->(:Technology {name: 'Neo4J'})
-RETURN u
+MATCH (s:Student)-[:ATTENDS]->(:Course {name: "COMP1831"})
+WHERE EXISTS {
+  MATCH (s)-[:WORKED_WITH]->(:Technology {name: "Neo4J"})
+}
+AND EXISTS {
+  MATCH (s)-[:WORKED_WITH]->(:Technology {name: "Python"})
+}
+RETURN s.name AS StudentName;
